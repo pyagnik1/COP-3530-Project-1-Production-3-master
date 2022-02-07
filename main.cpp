@@ -4,8 +4,6 @@
 #include <sstream>
 #include <algorithm>
 
-
-
 using namespace std;
 #define COUNT 10
 
@@ -48,26 +46,37 @@ gatorInfo *rightRotate(gatorInfo *root)
 {
 	gatorInfo *newParent = root->left;
 	gatorInfo *garndChild = newParent->right;
-	/*
-			Pre rotation-->
-			root->val = 3, newParent->val = 2, grandChild = NULL
-								root->	3
-										/
-			newParent	->	2
-									/		\
-								1			NULL	<- grandChild
-		*/
+
+	/*----------------------------------------------------------------
+
+	Pre Rotation
+
+	root->val = 3, newParent->val = 2, grandChild = NULL
+
+						3<- root
+					/
+				2<- newParent
+			/		\
+		1			NULL <- grandChild
+
+
+	*/
 	newParent->right = root;
 	root->left = garndChild;
-	/*
-				Post rotation
-				newParent->val = 2, newParent->right->val = 3
-							newParent->	2
-												/		\
-											1				3 <-root
-														/
-													NULL <-grandChild
-			*/
+
+	/*----------------------------------------------------------------
+
+	Post Rotation
+
+	newParent->val = 2, newParent->right->val = 3
+
+						2 <- newParent
+					/		\
+				1			  3 <-root
+							/
+							NULL	<- grandChild
+
+	*/
 	root->height = max(height(root->left), height(root->right)) + 1;
 	newParent->height = max(height(newParent->left), height(newParent->right)) + 1;
 
@@ -78,14 +87,20 @@ gatorInfo *leftRotate(gatorInfo *root)
 {
 	gatorInfo *newParent = root->right;
 	gatorInfo *garndChild = newParent->left;
-	/*
-			Pre rotation
-							root->	1
-												\
-							newParent->	2
-												/		\
-			grandChild->		NULL	   3
-		*/
+
+	/*----------------------------------------------------------------
+
+	Pre rotation
+
+	root = 1, newParent = 2, grandChild = NULL
+
+						1
+							\
+							  2<- newParent
+							 /	 \
+				grandChild->NULL  3
+
+	*/
 
 	newParent->left = root;
 	root->right = garndChild;
@@ -93,14 +108,18 @@ gatorInfo *leftRotate(gatorInfo *root)
 	root->height = max(height(root->left), height(root->right)) + 1;
 	newParent->height = max(height(newParent->left), height(newParent->right)) + 1;
 
-	/*
-		Post rotation
-		newParent->		2
-								/		\
-			root->	1				3
-								\
-								NULL <- grandChild
-		*/
+	/*----------------------------------------------------------------
+
+	Post Rotation
+
+						2
+					/		\
+			root ->1 		 3
+					\
+					NULL<- grandChild
+
+
+	*/
 	return newParent;
 }
 
@@ -115,58 +134,67 @@ int getBalance(gatorInfo *root)
 
 gatorInfo *balanceTree(gatorInfo *root, int gatorID, int balance)
 {
-	// Left Left Case
-	/*
-		-->Left Left case
-		--> fix: Rotate right
-				-->root->left->val = 2
-						3 <-balance =2
-					/
-				2	<-balance =1			-->				2 <- balance = 1- 1 = 0
-			/															/		\
-		1															1				3
-		*/
+
 	if (balance > 1 && gatorID < root->left->gatorID)
 	{
+		/*----------------------------------------------------------------
+
+		Left Left case
+
+		Fix: Rotate right
+
+				3 <-root, balance = 2							2 <- balance = 1 - 1 = 0
+			  /												/		\
+			 2 <-root->left, balance = 1   --> 			  1			 3
+			/
+		   1
+
+		*/
 		return rightRotate(root);
 	}
-	// Right Right Case
-	/*
-		--> Right Right case
-		--> fix: Rotate 1 to left
-		1 <- balance = -2
-			\
-				2	<- balance = -1			-->			2 <- balance = 1 - 1 = 0
-					\													/		\
-						3											1				3
-		*/
+	
 	if (balance < -1 && gatorID > root->right->gatorID)
 	{
+		/*----------------------------------------------------------------
+		Right Right case
+		Fix: Rotate left
+
+		1 <- root, balance = -2									2<- balance = 1- 1 = 0
+		  \													  /   \
+		   2 <-root->right, balance = -1		-->			1      3
+		    \
+			 3
+
+
+		*/
 		return leftRotate(root);
 	}
 
-	// Left Right Case
-	/*
-		-->Left Right case
-		--> fix: 1.Rotate left
-				-->root->val = 1, root->left->val = 2
-
-			3	<- balance = 2								3 <- balance = 2
-		/																/
-		1	<- balance = -1		--> 			2 <- balance = 1
-		\														/
-			2												1
-		-->2. rotate righ
-			-->root->val = 2
-						3 <- balance = 2
-					/
-				2	<- balance = 1		-->			2 <- balance = 1 - 1 = 0
-			/														/		\
-		1														1				3
-
-		*/
 	if (balance > 1 && gatorID > root->left->gatorID)
 	{
+		/*----------------------------------------------------------------
+		Left Right case
+
+		Fix: 1) Rotate Left
+			 2) rotate Right
+
+		1)Rotate left
+
+			3 <- root, balance = 2					3 <- balance = 2					
+		   /									  /
+		  2 <-balance = -1			-->			 2 <- balance = 1
+		   \									/
+		    1								   1
+
+		2) Rotate Right
+
+				3 <- balance = 2						2	<- balance = 1 - 1 = 0				
+			  /										/		\
+			1 <- balance = 1		-->			   1		 3
+		   /
+		  2 
+
+		*/
 		root->left = leftRotate(root->left);
 		return rightRotate(root);
 	}
