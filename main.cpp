@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <string>
+#include <stdio.h>
+#include <sstream>
+
 using namespace std;
 #define COUNT 10
 
@@ -46,9 +50,9 @@ gatorInfo *rightRotate(gatorInfo *root)
 			root->val = 3, newParent->val = 2, grandChild = NULL
 								root->	3
 										/
-			newParent	->	2	
-									/		\					
-								1			NULL	<- grandChild			
+			newParent	->	2
+									/		\
+								1			NULL	<- grandChild
 		*/
 	newParent->right = root;
 	root->left = garndChild;
@@ -75,9 +79,9 @@ gatorInfo *leftRotate(gatorInfo *root)
 			Pre rotation
 							root->	1
 												\
-							newParent->	2			
-												/		\					
-			grandChild->		NULL	   3				
+							newParent->	2
+												/		\
+			grandChild->		NULL	   3
 		*/
 
 	newParent->left = root;
@@ -119,7 +123,8 @@ gatorInfo *balanceTree(gatorInfo *root, int gatorID, int balance)
 			/															/		\
 		1															1				3
 		*/
-	if (balance > 1 && gatorID < root->left->gatorID){
+	if (balance > 1 && gatorID < root->left->gatorID)
+	{
 		return rightRotate(root);
 	}
 	// Right Right Case
@@ -132,7 +137,8 @@ gatorInfo *balanceTree(gatorInfo *root, int gatorID, int balance)
 					\													/		\
 						3											1				3
 		*/
-	if (balance < -1 && gatorID > root->right->gatorID){
+	if (balance < -1 && gatorID > root->right->gatorID)
+	{
 		return leftRotate(root);
 	}
 
@@ -140,8 +146,8 @@ gatorInfo *balanceTree(gatorInfo *root, int gatorID, int balance)
 	/*
 		-->Left Right case
 		--> fix: 1.Rotate left
-				-->root->val = 1, root->left->val = 2 
-		
+				-->root->val = 1, root->left->val = 2
+
 			3	<- balance = 2								3 <- balance = 2
 		/																/
 		1	<- balance = -1		--> 			2 <- balance = 1
@@ -154,7 +160,7 @@ gatorInfo *balanceTree(gatorInfo *root, int gatorID, int balance)
 				2	<- balance = 1		-->			2 <- balance = 1 - 1 = 0
 			/														/		\
 		1														1				3
-		
+
 		*/
 	if (balance > 1 && gatorID > root->left->gatorID)
 	{
@@ -167,13 +173,13 @@ gatorInfo *balanceTree(gatorInfo *root, int gatorID, int balance)
 		-->Right Left case
 			--> fix: 1. Rotae right
 			-->root->right->val = 3
-		
+
 			1	<- balance = -2								1 <- balance = -2
 				\																\
 					3 <- balance = 1		--> 				2	<- balance = -1
-				/																		\				
+				/																		\
 			2																				3
-			-->2. Rotate left	
+			-->2. Rotate left
 			-->root->val = 2, root->right->val = 3
 			1	<-balance = -2
 				\
@@ -279,15 +285,15 @@ int searchGatorName(gatorInfo *root, const string &gatorName)
 
 						Parth
 					/				\
-			Poojan			Poojan	
+			Poojan			Poojan
 
 	*/
 
 	/*
 		To find the duplicate name with 2
 		diffrent gatorID I need to first
-		traverse the left subtree, if such 
-		name exists then print it, after 
+		traverse the left subtree, if such
+		name exists then print it, after
 		traverse the right subtree and
 		print if the name was found
 	*/
@@ -306,7 +312,8 @@ gatorInfo *findMin(gatorInfo *node)
 {
 	gatorInfo *temp = node;
 
-	while (temp && temp->left != NULL){
+	while (temp && temp->left != NULL)
+	{
 		temp = temp->left;
 	}
 
@@ -318,36 +325,35 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 	if (root == NULL)
 		return root;
 
-	//Deleting gatorID is first requires searching 
-	//for the gatorID in the same way as bst searching
+	// Deleting gatorID is first requires searching
+	// for the gatorID in the same way as bst searching
 	if (gatorID < root->gatorID)
 	{
-			/*
-			delet 4
+		/*
+		delet 4
 
-															8
-														/		\
-													7				10
-												/		\			
-		Find this node->		4		5				
+														8
+													/		\
+												7				10
+											/		\
+	Find this node->		4		5
 
-		*/
+	*/
 		root->left = deleteGatorID(root->left, gatorID);
 	}
 
-	
 	if (gatorID > root->gatorID)
 	{
-		 /*
-			delet 10
+		/*
+		   delet 10
 
-															8
-														/		\
-													7				10 <- delet this
-												/		\			
-												4		5				
+														   8
+													   /		\
+												   7				10 <- delet this
+											   /		\
+											   4		5
 
-		*/
+	   */
 		root->right = deleteGatorID(root->right, gatorID);
 	}
 
@@ -363,37 +369,36 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 
 
 		*/
-	if(gatorID == root->gatorID)
+	if (gatorID == root->gatorID)
 	{
 		// node has no child
 		if (root->left == NULL and root->right == NULL)
 		{
-				/*
+			/*
 
-			pre return
+		pre return
 
-															8
-														/		\
-													7				10 <- root
-												/		\		/		\
-												4		5	NULL	NULL
+														8
+													/		\
+												7				10 <- root
+											/		\		/		\
+											4		5	NULL	NULL
 
 
-		*/
+	*/
 			return NULL;
-				/*
+			/*
 
-			post return
+		post return
 
-															8
-														/		\
-													7			NULL<- root
-												/		\		
-												4		5	
+														8
+													/		\
+												7			NULL<- root
+											/		\
+											4		5
 
 
-		*/
-
+	*/
 		}
 
 		// node with only one child or no child
@@ -418,8 +423,8 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 															8
 														/		\
 													7				2<- temp
-												/		\		 
-												4		5			
+												/		\
+												4		5
 
 			*/
 		}
@@ -431,8 +436,8 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 															8
 														/		\
 										root->7				10
-												/		\		 
-									temp->4		NULL	
+												/		\
+									temp->4		NULL
 
 			*/
 			gatorInfo *temp = root->left;
@@ -444,28 +449,28 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 															8
 														/		\
 										temp->4				10
-												
+
 
 			*/
 		}
 
-			/*
-						pre return
+		/*
+					pre return
 
-																	8
-																/		\
-											root->	7				2
-														/		\		 
-													4				5	
-																/		\
-		temp =	return of findMin->3			8		
+																8
+															/		\
+										root->	7				2
+													/		\
+												4				5
+															/		\
+	temp =	return of findMin->3			8
 
 
-			while (temp && temp->left != NULL){
-					temp = temp->left;
-				}
-			*/
-		
+		while (temp && temp->left != NULL){
+				temp = temp->left;
+			}
+		*/
+
 		gatorInfo *temp = findMin(root->right);
 
 		/*
@@ -474,10 +479,10 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 																	8
 																/		\
 											root->	3				2
-														/		\		 
-													1				5	
+														/		\
+													1				5
 																/		\
-															3				8		
+															3				8
 
 
 			while (temp && temp->left != NULL){
@@ -487,7 +492,6 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 		root->gatorID = temp->gatorID;
 		root->gatorName = temp->gatorName;
 
-		
 		root->right = deleteGatorID(root->right, temp->gatorID);
 		/*
 						post return
@@ -495,13 +499,13 @@ gatorInfo *deleteGatorID(gatorInfo *root, int gatorID)
 																	8
 																/		\
 											root->	3				2
-														/		\		 
-													1				5	
+														/		\
+													1				5
 																/		\
-				delete(root->right)->	3				8		
+				delete(root->right)->	3				8
 
 
-			
+
 		*/
 	}
 	cout << "successful\n";
@@ -527,9 +531,9 @@ void searchGatorID(gatorInfo *root, int gatorID, gatorInfo *parent)
 
 															8
 														/		\
-					find this->			7				10 
-												/		\			
-												4		5				
+					find this->			7				10
+												/		\
+												4		5
 
 		*/
 	if (gatorID < root->gatorID)
@@ -542,8 +546,8 @@ void searchGatorID(gatorInfo *root, int gatorID, gatorInfo *parent)
 															8
 														/		\
 													7				10 <- find this
-												/		\			
-												4		5				
+												/		\
+												4		5
 
 		*/
 	return searchGatorID(root->right, gatorID, root);
@@ -551,22 +555,22 @@ void searchGatorID(gatorInfo *root, int gatorID, gatorInfo *parent)
 
 void printInorder(gatorInfo *root)
 {
-	if(root != NULL)
-    {
-        if(root->left) 
-        {
-            printInorder(root->left);
-            cout << ", "; 
-        }
+	if (root != NULL)
+	{
+		if (root->left)
+		{
+			printInorder(root->left);
+			cout << ", ";
+		}
 
-        cout << root->gatorName;
+		cout << root->gatorName;
 
-        if(root->right)
-        {
-            cout << ", "; 
-            printInorder(root->right);
-        }
-   }	
+		if (root->right)
+		{
+			cout << ", ";
+			printInorder(root->right);
+		}
+	}
 }
 
 void printPreorder(gatorInfo *root)
@@ -594,10 +598,12 @@ bool printPostorder(gatorInfo *root)
 	{
 		return false;
 	}
-	if (printPostorder(root->left)){
+	if (printPostorder(root->left))
+	{
 		cout << ", ";
 	}
-	if (printPostorder(root->right)){
+	if (printPostorder(root->right))
+	{
 		cout << ", ";
 	}
 	cout << root->gatorName;
@@ -622,18 +628,18 @@ int findLevel(gatorInfo *root)
 	int left = 0;
 	if (root->left != NULL)
 	{
-		//This will traverse the left subtree and find the level
+		// This will traverse the left subtree and find the level
 		left = findLevel(root->left);
 	}
 
 	int right = 0;
 	if (root->right != NULL)
 	{
-		//This will traverse the right subtree and find the level
+		// This will traverse the right subtree and find the level
 		right = findLevel(root->right);
 	}
 
-	//Since the level of left or right might be the highest, I need to find the max of the two
+	// Since the level of left or right might be the highest, I need to find the max of the two
 	return (max(left, right) + 1);
 }
 
@@ -650,32 +656,28 @@ gatorInfo *removeNthInorder(gatorInfo *root, int n, gatorInfo *temp)
 
 		if (count == n)
 		{
-			//cout << temp->gatorName << "<--\n";
+			// cout << temp->gatorName << "<--\n";
 
 			root = deleteGatorID(root, temp->gatorID);
 
 			return root;
-
 		}
 
-		//To find the Nth node in the tree, I first traverse the left subtree and then travel the right subtree
+		// To find the Nth node in the tree, I first traverse the left subtree and then travel the right subtree
 
 		removeNthInorder(root, n, temp->right);
 
 		removeNthInorder(root, n, temp->left);
-
 	}
 
 	return root;
-
 }
 
 bool isNumber(const string &str)
 {
-	for (char const &c : str)
+	for (int i = 0; i < str.length(); i++)
 	{
-
-		if (std::isdigit(c) == 0)
+		if (str[i] < '0' || str[i] > '9')
 		{
 			return false;
 		}
@@ -704,10 +706,7 @@ int main()
 			int gatorID = 0;
 			string gatorName;
 
-
 			cin >> gatorName;
-
-			
 
 			cin >> gatorID;
 			gatorName.erase(remove(gatorName.begin(), gatorName.end(), '\"'), gatorName.end());
@@ -769,7 +768,7 @@ int main()
 		}
 		if (comand == "printInorder")
 		{
-			
+
 			printInorder(root);
 			cout << "\n";
 		}
